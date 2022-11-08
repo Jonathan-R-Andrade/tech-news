@@ -33,9 +33,37 @@ def scrape_next_page_link(html_content):
     return next_page_link
 
 
+def remove_invalid_characters(text: str):
+    text = text.replace("\xa0", "")
+    text = text[:-1] if text.endswith(" ") else text
+    return text
+
+
 # Requisito 4
 def scrape_noticia(html_content):
-    """Seu código deve vir aqui"""
+    selector = Selector(html_content)
+    page_data = dict()
+
+    title = selector.css("h1.entry-title::text").get()
+    timestamp1 = selector.css("p.post-modified-info::text").re_first(
+        r"\d{2}/\d{2}/\d{4}"
+    )
+    timestamp2 = selector.css("li.meta-date::text").re_first(
+        r"\d{2}/\d{2}/\d{4}"
+    )
+    comments_count = selector.css("h5.title-block::text").re_first(r"\d+")
+    summary = selector.css("div.entry-content p")[0].css("*::text").getall()
+
+    page_data["url"] = selector.css('link[rel="canonical"]::attr(href)').get()
+    page_data["title"] = remove_invalid_characters(title)
+    page_data["timestamp"] = timestamp1 or timestamp2
+    page_data["writer"] = selector.css("a.url.fn.n::text").get()
+    page_data["comments_count"] = int(comments_count) if comments_count else 0
+    page_data["summary"] = remove_invalid_characters("".join(summary))
+    page_data["tags"] = selector.css(".post-tags ul li a::text").getall()
+    page_data["category"] = selector.css(".category-style .label::text").get()
+
+    return page_data
 
 
 # Requisito 5
