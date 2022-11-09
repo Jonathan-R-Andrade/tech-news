@@ -1,8 +1,9 @@
+from typing import List, Dict
 from tech_news.database import search_news
 import datetime
 
 
-def convert_news(news_list: list[dict]):
+def convert_news(news_list: List[Dict]):
     return [(news["title"], news["url"]) for news in news_list]
 
 
