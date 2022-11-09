@@ -9,8 +9,7 @@ def convert_news(news_list: list[dict]):
 # Requisito 6
 def search_by_title(title: str):
     news_found = search_news({"title": {"$regex": title, "$options": "i"}})
-    news = [(news["title"], news["url"]) for news in news_found]
-    return news
+    return convert_news(news_found)
 
 
 # Requisito 7
@@ -20,8 +19,7 @@ def search_by_date(date: str):
     except ValueError:
         raise ValueError("Data inválida")
     news_found = search_news({"timestamp": date.strftime("%d/%m/%Y")})
-    news = [(news["title"], news["url"]) for news in news_found]
-    return news
+    return convert_news(news_found)
 
 
 # Requisito 8
