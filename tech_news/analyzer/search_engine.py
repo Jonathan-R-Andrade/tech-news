@@ -2,6 +2,10 @@ from tech_news.database import search_news
 import datetime
 
 
+def convert_news(news_list: list[dict]):
+    return [(news["title"], news["url"]) for news in news_list]
+
+
 # Requisito 6
 def search_by_title(title: str):
     news_found = search_news({"title": {"$regex": title, "$options": "i"}})
@@ -21,8 +25,9 @@ def search_by_date(date: str):
 
 
 # Requisito 8
-def search_by_tag(tag):
-    """Seu código deve vir aqui"""
+def search_by_tag(tag: str):
+    news_found = search_news({"tags": {"$regex": tag, "$options": "i"}})
+    return convert_news(news_found)
 
 
 # Requisito 9
