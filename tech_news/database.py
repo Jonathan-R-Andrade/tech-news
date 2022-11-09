@@ -39,6 +39,15 @@ def find_top_5_news():
     )
 
 
+def find_top_5_categories():
+    pipeline = [
+        {"$group": {"_id": "$category", "total": {"$sum": 1}}},
+        {"$sort": {"total": -1, "_id": 1}},
+        {"$limit": 5},
+    ]
+    return list(db.news.aggregate(pipeline))
+
+
 def search_news(query):
     return list(db.news.find(query))
 
