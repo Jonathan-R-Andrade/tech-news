@@ -3,7 +3,7 @@
 # Atenção: este arquivo não deve ser alterado. Mudanças aqui não serão
 # refletidas no avaliador automático.
 
-from pymongo import MongoClient, ASCENDING, DESCENDING
+from pymongo import MongoClient
 from decouple import config
 import copy
 
@@ -29,23 +29,6 @@ def insert_or_update(notice):
 
 def find_news():
     return list(db.news.find({}, {"_id": False}))
-
-
-def find_top_5_news():
-    return list(
-        db.news.find({})
-        .sort([("comments_count", DESCENDING), ("title", ASCENDING)])
-        .limit(5)
-    )
-
-
-def find_top_5_categories():
-    pipeline = [
-        {"$group": {"_id": "$category", "total": {"$sum": 1}}},
-        {"$sort": {"total": -1, "_id": 1}},
-        {"$limit": 5},
-    ]
-    return list(db.news.aggregate(pipeline))
 
 
 def search_news(query):
