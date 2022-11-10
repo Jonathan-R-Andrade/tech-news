@@ -96,11 +96,19 @@ functions = {
 }
 
 
+def get_option():
+    if len(sys.argv) > 1:
+        option = sys.argv[1]
+    else:
+        print(OPTIONS_LIST)
+        option = input("Digite o número da opção: ")
+
+    return option
+
+
 # Requisito 12
 def analyzer_menu():
-    print(OPTIONS_LIST)
-
-    option = input("Digite o número da opção: ")
+    option = get_option()
 
     if option == "7":
         print("Encerrando script")
