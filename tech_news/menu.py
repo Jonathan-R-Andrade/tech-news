@@ -1,3 +1,5 @@
+from typing import Union, List, Tuple
+from tabulate import tabulate
 import sys
 from tech_news.scraper import get_tech_news
 from tech_news.analyzer.ratings import top_5_news, top_5_categories
@@ -19,6 +21,20 @@ OPTIONS_LIST = (
     " 6 - Listar top 5 categorias;\n"
     " 7 - Sair.\n"
 )
+NEWS_HEADERS = ["Título", "Link"]
+CATEGORY_HEADER = ["Categoria"]
+
+
+def get_table(data: List[Union[List, Tuple]], headers: List[str]):
+    width = 100 if len(data) > 0 else None
+    table = tabulate(
+        data,
+        headers=headers,
+        tablefmt="fancy_grid",
+        maxheadercolwidths=width,
+        maxcolwidths=width,
+    )
+    return table
 
 
 def populate_database():
@@ -31,35 +47,42 @@ def populate_database():
 def search_news_by_title():
     title = input("Digite o título: ")
     news = search_by_title(title)
-    print("\n", news, sep="")
+    table = get_table(news, headers=NEWS_HEADERS)
+    print("\n", table, sep="")
 
 
 def search_news_by_date():
     date = input("Digite a data no formato aaaa-mm-dd: ")
     news = search_by_date(date)
-    print("\n", news, sep="")
+    table = get_table(news, headers=NEWS_HEADERS)
+    print("\n", table, sep="")
 
 
 def search_news_by_tag():
     tag = input("Digite a tag: ")
     news = search_by_tag(tag)
-    print("\n", news, sep="")
+    table = get_table(news, headers=NEWS_HEADERS)
+    print("\n", table, sep="")
 
 
 def search_news_by_category():
     category = input("Digite a categoria: ")
     news = search_by_category(category)
-    print("\n", news, sep="")
+    table = get_table(news, headers=NEWS_HEADERS)
+    print("\n", table, sep="")
 
 
 def show_top_5_news():
     news = top_5_news()
-    print("\n", news, sep="")
+    table = get_table(news, headers=NEWS_HEADERS)
+    print("\n", table, sep="")
 
 
 def show_top_5_categories():
     categories = top_5_categories()
-    print("\n", categories, sep="")
+    categories = [[category] for category in categories]
+    table = get_table(categories, headers=CATEGORY_HEADER)
+    print("\n", table, sep="")
 
 
 functions = {
