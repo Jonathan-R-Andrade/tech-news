@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from typing import Union, List, Tuple
 from tabulate import tabulate
 import sys
@@ -24,15 +25,28 @@ OPTIONS_LIST = (
 NEWS_HEADERS = ["Título", "Link"]
 CATEGORY_HEADER = ["Categoria"]
 
+parser = ArgumentParser(allow_abbrev=False)
+parser.add_argument(
+    "-o", "--option", help="action number to be performed by the script"
+)
+parser.add_argument(
+    "-w",
+    "--width",
+    type=int,
+    default=100,
+    help="maximum width of table column",
+)
+
 
 def get_table(data: List[Union[List, Tuple]], headers: List[str]):
-    width = 100 if len(data) > 0 else None
+    args, _ = parser.parse_known_args()
+    maxcolwidth = args.width if len(data) > 0 else None
     table = tabulate(
         data,
         headers=headers,
         tablefmt="fancy_grid",
-        maxheadercolwidths=width,
-        maxcolwidths=width,
+        maxheadercolwidths=maxcolwidth,
+        maxcolwidths=maxcolwidth,
     )
     return table
 
@@ -97,8 +111,9 @@ functions = {
 
 
 def get_option():
-    if len(sys.argv) > 1:
-        option = sys.argv[1]
+    args, _ = parser.parse_known_args()
+    if args.option:
+        option = args.option
     else:
         print(OPTIONS_LIST)
         option = input("Digite o número da opção: ")
