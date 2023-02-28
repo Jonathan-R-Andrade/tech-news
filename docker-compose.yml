@@ -1,11 +1,9 @@
-version: "3"
+version: "3.0"
 
 services:
   news:
     build: .
     image: tech_news_image
-    volumes:
-      - ./:/app
     container_name: tech_news
     tty: true # docker run -t
     stdin_open: true # docker run -i
@@ -15,17 +13,14 @@ services:
       - mongodb
     environment:
       - DB_HOST=mongodb
+      - DB_PORT=27017
     networks:
       - tech_news_net
 
   mongodb:
     image: mongo:4.4.14
     container_name: tech_news_db
-    volumes:
-      - ./:/app
     restart: unless-stopped
-    ports:
-      - 27017:27017
     networks:
       - tech_news_net
 
