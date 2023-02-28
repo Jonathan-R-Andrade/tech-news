@@ -68,17 +68,17 @@ Siga os passos abaixo executando os comandos no terminal.
 
        > Para rodar esse projeto localmente eu utilizei o Python na versão 3.8.16 e o MongoDB na versão 5.0.14.
 
-       3. Crie o ambiente virtual.
+       1. Crie o ambiente virtual.
        ```bash
        python3 -m venv .venv
        ```
 
-       4. Ative o ambiente virtual.
+       2. Ative o ambiente virtual.
        ```bash
        source .venv/bin/activate
        ```
 
-       5. Instale as dependências.
+       3. Instale as dependências.
        ```bash
        python3 -m pip install -r dev-requirements.txt
        ```
